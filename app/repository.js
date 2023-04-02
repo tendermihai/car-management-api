@@ -38,3 +38,49 @@ export async function getById(id) {
   }
   return null;
 }
+
+export function save(data) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile("data.json", JSON.stringify(data), (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
+export async function addCar(car) {
+  let cars = await getCars();
+
+  car.id = await generateId();
+
+  cars.push(car);
+
+  save(cars);
+}
+
+//todo ce verifica daca exista un id
+
+export async function verifyId(cars, id) {
+  for (let i = 0; i < cars.length; i++) {
+    if (cars[i].id == id) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+export async function generateId() {
+  let cars = await getCars();
+
+  let id = Math.random() * 1000000 + 10000 + "";
+
+  while (verifyId(cars, id) == true) {
+    id = Math.random() * 1000000 + 10000 + "";
+  }
+
+  return id.replace(".", "");
+}
