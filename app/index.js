@@ -1,4 +1,10 @@
-import { getCars, getSortCars, getById } from "./repository.js";
+import {
+  getCars,
+  getSortCars,
+  getById,
+  addCar,
+  verifyId,
+} from "./repository.js";
 
 import express, { json, request, response } from "express";
 
@@ -32,6 +38,21 @@ app.get("/api/v1/car/find/id/:id", async (request, response) => {
   } else {
     response.status(400).json({ message: "Masina nu este in bazaq de date " });
   }
+});
+app.post("/api/v1/car/add", async (request, response) => {
+  //car =request.body.car //destructurare
+
+  let car = {
+    make: request.body.make,
+    model: request.body.model,
+    year: request.body.year,
+    color: request.body.color,
+    price: request.body.price,
+  };
+
+  console.log(request.body);
+  await addCar(car);
+  response.status(200).json(car);
 });
 
 app.listen(5000, () => {
