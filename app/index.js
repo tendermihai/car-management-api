@@ -4,6 +4,8 @@ import {
   getById,
   addCar,
   verifyId,
+  deleteCar,
+  updateCar,
 } from "./repository.js";
 
 import express, { json, request, response } from "express";
@@ -53,6 +55,17 @@ app.post("/api/v1/car/add", async (request, response) => {
   console.log(request.body);
   await addCar(car);
   response.status(200).json(car);
+});
+
+app.delete("/api/v1/car/delete/id/:id", async (request, response) => {
+  const id = request.params.id;
+  await deleteCar(id);
+  response.status(200).json(id);
+});
+
+app.put("/api/v1/car/update", async (request, response) => {
+  await updateCar(request.body.car);
+  response.status(200).json(request.body.car);
 });
 
 app.listen(5000, () => {
